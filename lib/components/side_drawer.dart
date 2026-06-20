@@ -1,5 +1,5 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:genbi/components/glass.dart';
 
 class SideDrawer extends StatefulWidget {
   const SideDrawer({super.key});
@@ -9,105 +9,67 @@ class SideDrawer extends StatefulWidget {
 }
 
 class _SideDrawerState extends State<SideDrawer> {
-  // Tracks the currently active page in Section I
-  int _selectedIndex = 0;
+  int _selected = 0;
+
+  static const _navItems = [
+    (label: 'Overview', icon: Icons.pie_chart_outline),
+    (label: 'Transform', icon: Icons.auto_awesome_mosaic_outlined),
+    (label: 'Dashboard', icon: Icons.dashboard_outlined),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 280, // Fixed width for the sidebar
-      margin: const EdgeInsets.all(16), // Creates a floating glass effect
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Colors.white.withValues(alpha: 0.13),
-            Colors.white.withValues(alpha: 0.05),
-          ],
-        ),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.18),
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.40),
-            blurRadius: 64,
-            offset: const Offset(0, 32),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 28, sigmaY: 28),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // ─── Top Section ─────────────────────────────────────────────
-                _NewAnalysisButton(),
-                const SizedBox(height: 40),
-
-                // ─── Section I: Selectable Pages ─────────────────────────────
-                Padding(
-                  padding: const EdgeInsets.only(left: 12, bottom: 16),
-                  child: Text(
-                    'SECTION I',
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.2,
-                      color: Colors.white.withValues(alpha: 0.35),
-                    ),
-                  ),
-                ),
-                _NavItem(
-                  title: 'Overview',
-                  icon: Icons.pie_chart_outline,
-                  isSelected: _selectedIndex == 0,
-                  onTap: () => setState(() => _selectedIndex = 0),
-                ),
-                const SizedBox(height: 8),
-                _NavItem(
-                  title: 'Transform',
-                  icon: Icons.auto_awesome_mosaic_outlined,
-                  isSelected: _selectedIndex == 1,
-                  onTap: () => setState(() => _selectedIndex = 1),
-                ),
-                const SizedBox(height: 8),
-                _NavItem(
-                  title: 'Dashboard',
-                  icon: Icons.dashboard_outlined,
-                  isSelected: _selectedIndex == 2,
-                  onTap: () => setState(() => _selectedIndex = 2),
-                ),
-
-                const Spacer(), // Pushes the account info to the bottom
-                // ─── Bottom Section ──────────────────────────────────────────
-                const _Divider(),
-                const SizedBox(height: 16),
-                const _AccountTile(),
-              ],
+    return GlassBox(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      child: SizedBox(
+        width: 280,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _GlassButton(label: 'New Analysis', icon: Icons.add, onTap: () {}),
+            const SizedBox(height: 40),
+            const Padding(
+              padding: EdgeInsets.only(left: 12, bottom: 16),
+              child: GlassLabel('SECTION I'),
             ),
-          ),
+            ..._navItems.mapIndexed(
+              (i, item) => Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: _NavItem(
+                  label: item.label,
+                  icon: item.icon,
+                  selected: _selected == i,
+                  onTap: () => setState(() => _selected = i),
+                ),
+              ),
+            ),
+            const Spacer(),
+            const GlassDivider(),
+            const SizedBox(height: 16),
+            const _AccountTile(),
+          ],
         ),
       ),
     );
   }
 }
 
-// ─── Custom Widgets ──────────────────────────────────────────────────────────
+// ─── Glass button (New Analysis) ─────────────────────────────────────────────
+class _GlassButton extends StatefulWidget {
+  final String label;
+  final IconData icon;
+  final VoidCallback onTap;
+  const _GlassButton({
+    required this.label,
+    required this.icon,
+    required this.onTap,
+  });
 
-class _NewAnalysisButton extends StatefulWidget {
   @override
-  State<_NewAnalysisButton> createState() => _NewAnalysisButtonState();
+  State<_GlassButton> createState() => _GlassButtonState();
 }
 
-class _NewAnalysisButtonState extends State<_NewAnalysisButton> {
+class _GlassButtonState extends State<_GlassButton> {
   bool _hovered = false;
 
   @override
@@ -117,9 +79,7 @@ class _NewAnalysisButtonState extends State<_NewAnalysisButton> {
       onExit: (_) => setState(() => _hovered = false),
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: () {
-          // Handle New Analysis Action
-        },
+        onTap: widget.onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           width: double.infinity,
@@ -128,33 +88,20 @@ class _NewAnalysisButtonState extends State<_NewAnalysisButton> {
             borderRadius: BorderRadius.circular(12),
             gradient: LinearGradient(
               colors: _hovered
-                  ? [
-                      Colors.white.withValues(alpha: 0.25),
-                      Colors.white.withValues(alpha: 0.15),
-                    ]
-                  : [
-                      Colors.white.withValues(alpha: 0.15),
-                      Colors.white.withValues(alpha: 0.05),
-                    ],
+                  ? [AppColors.w(0.25), AppColors.w(0.15)]
+                  : [AppColors.w(0.15), AppColors.w(0.05)],
             ),
-            border: Border.all(
-              color: Colors.white.withValues(alpha: _hovered ? 0.3 : 0.15),
-              width: 1,
-            ),
+            border: Border.all(color: AppColors.w(_hovered ? 0.3 : 0.15)),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.add,
-                color: Colors.white.withValues(alpha: 0.9),
-                size: 18,
-              ),
+              Icon(widget.icon, color: AppColors.w(0.9), size: 18),
               const SizedBox(width: 8),
               Text(
-                'New Analysis',
+                widget.label,
                 style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.9),
+                  color: AppColors.w(0.9),
                   fontSize: 13.5,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 0.3,
@@ -168,16 +115,16 @@ class _NewAnalysisButtonState extends State<_NewAnalysisButton> {
   }
 }
 
+// ─── Nav item ─────────────────────────────────────────────────────────────────
 class _NavItem extends StatefulWidget {
-  final String title;
+  final String label;
   final IconData icon;
-  final bool isSelected;
+  final bool selected;
   final VoidCallback onTap;
-
   const _NavItem({
-    required this.title,
+    required this.label,
     required this.icon,
-    required this.isSelected,
+    required this.selected,
     required this.onTap,
   });
 
@@ -201,10 +148,10 @@ class _NavItemState extends State<_NavItem> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: widget.isSelected
-                ? Colors.white.withValues(alpha: 0.12)
+            color: widget.selected
+                ? AppColors.w(0.12)
                 : _hovered
-                ? Colors.white.withValues(alpha: 0.05)
+                ? AppColors.w(0.05)
                 : Colors.transparent,
           ),
           child: Row(
@@ -212,21 +159,17 @@ class _NavItemState extends State<_NavItem> {
               Icon(
                 widget.icon,
                 size: 20,
-                color: widget.isSelected
-                    ? Colors.white
-                    : Colors.white.withValues(alpha: 0.5),
+                color: AppColors.w(widget.selected ? 1.0 : 0.5),
               ),
               const SizedBox(width: 16),
               Text(
-                widget.title,
+                widget.label,
                 style: TextStyle(
                   fontSize: 13.5,
-                  fontWeight: widget.isSelected
+                  fontWeight: widget.selected
                       ? FontWeight.w600
                       : FontWeight.w400,
-                  color: widget.isSelected
-                      ? Colors.white
-                      : Colors.white.withValues(alpha: 0.7),
+                  color: AppColors.w(widget.selected ? 1.0 : 0.7),
                   letterSpacing: 0.2,
                 ),
               ),
@@ -238,6 +181,7 @@ class _NavItemState extends State<_NavItem> {
   }
 }
 
+// ─── Account tile ─────────────────────────────────────────────────────────────
 class _AccountTile extends StatelessWidget {
   const _AccountTile();
 
@@ -258,7 +202,7 @@ class _AccountTile extends StatelessWidget {
             ),
             child: const Center(
               child: Text(
-                'JD', // Initials
+                'JD',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -275,48 +219,27 @@ class _AccountTile extends StatelessWidget {
                 Text(
                   'John Doe',
                   style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.9),
+                    color: AppColors.w(0.9),
                     fontWeight: FontWeight.w500,
                     fontSize: 13,
                   ),
                 ),
                 Text(
                   'Pro Plan',
-                  style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.4),
-                    fontSize: 11,
-                  ),
+                  style: TextStyle(color: AppColors.w(0.4), fontSize: 11),
                 ),
               ],
             ),
           ),
-          Icon(
-            Icons.more_vert,
-            color: Colors.white.withValues(alpha: 0.4),
-            size: 18,
-          ),
+          Icon(Icons.more_vert, color: AppColors.w(0.4), size: 18),
         ],
       ),
     );
   }
 }
 
-class _Divider extends StatelessWidget {
-  const _Divider();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 1,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.transparent,
-            Colors.white.withValues(alpha: 0.1),
-            Colors.transparent,
-          ],
-        ),
-      ),
-    );
-  }
+// ─── Tiny extension for indexed map ──────────────────────────────────────────
+extension _IndexedMap<T> on List<T> {
+  Iterable<R> mapIndexed<R>(R Function(int i, T e) f) =>
+      asMap().entries.map((e) => f(e.key, e.value));
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:genbi/pages/transform_page.dart';
+import 'package:genbi/pages/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,22 +10,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const seedPurple = Color(0xFF8B5CF6); // Soft modern purple
+
     return MaterialApp(
       title: 'GenInSight',
       debugShowCheckedModeBanner: false,
-      // Setting the theme mode strictly to dark
       themeMode: ThemeMode.dark,
-      // Configuring the dark theme properties
       darkTheme: ThemeData(
         brightness: Brightness.dark,
+
+        // Global default font
+        fontFamily: 'HankenGrotesk',
+
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
+          seedColor: seedPurple,
           brightness: Brightness.dark,
         ),
-        scaffoldBackgroundColor:
-            Colors.transparent, // Allows the gradient to show through
+
+        scaffoldBackgroundColor: Colors.transparent,
       ),
-      home: const TransformPage(),
+      home: const LoginPage(),
     );
   }
 }
