@@ -3,14 +3,9 @@ import 'package:flutter/material.dart';
 class SecondaryButton extends StatefulWidget {
   final String text;
   final Widget? icon;
-  final VoidCallback? onPressed;
+  final VoidCallback? onTap;
 
-  const SecondaryButton({
-    super.key,
-    required this.text,
-    this.icon,
-    this.onPressed,
-  });
+  const SecondaryButton({super.key, required this.text, this.icon, this.onTap});
 
   @override
   State<SecondaryButton> createState() => _SecondaryButtonState();
@@ -55,7 +50,7 @@ class _SecondaryButtonState extends State<SecondaryButton> {
               borderRadius: BorderRadius.circular(10),
               splashColor: Colors.black.withValues(alpha: 0.04),
               highlightColor: Colors.black.withValues(alpha: 0.02),
-              onTap: widget.onPressed ?? () {},
+              onTap: widget.onTap ?? () {},
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 28,

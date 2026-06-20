@@ -7,27 +7,35 @@ class AuthTextField extends StatelessWidget {
     required this.hint,
     this.obscureText = false,
     this.suffix,
+    this.labelTrailing,
   });
 
   final String label;
   final String hint;
   final bool obscureText;
   final Widget? suffix;
+  final Widget? labelTrailing;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 13,
-            color: Colors.black87,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              label,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
+                color: Colors.black87,
+              ),
+            ),
+            if (labelTrailing != null) labelTrailing!,
+          ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
         TextField(
           obscureText: obscureText,
           style: const TextStyle(color: Colors.black87),

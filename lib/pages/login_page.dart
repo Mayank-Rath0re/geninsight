@@ -51,6 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 45,
+                            color: Colors.white,
                           ),
                         ),
                       ],
@@ -61,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 30,
+                        color: Colors.purple.shade50,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -69,6 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -88,6 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w700,
+                                color: Colors.white,
                               ),
                             ),
                           ],
@@ -114,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                       });
                     },
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 18),
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 250),
                     switchInCurve: Curves.easeOut,
@@ -159,39 +163,26 @@ class _LoginPageState extends State<LoginPage> {
             color: Colors.black,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
         Text(
           "Please enter your details to access your workspace.",
           style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
         ),
-        const SizedBox(height: 28),
+        const SizedBox(height: 16),
         const AuthTextField(label: "Email Address", hint: "name@company.com"),
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              "Password",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 13,
-                color: Colors.black87,
-              ),
-            ),
-            Text(
-              "Forgot Password?",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 13,
-                color: Color(0xFF6A11CB),
-              ),
-            ),
-          ],
-        ),
+        const SizedBox(height: 14),
         AuthTextField(
-          label: "",
+          label: "Password",
           hint: "••••••••",
           obscureText: _obscurePassword,
+          labelTrailing: Text(
+            "Forgot Password?",
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 13,
+              color: Color(0xFF6A11CB),
+            ),
+          ),
           suffix: IconButton(
             icon: Icon(
               _obscurePassword
@@ -206,7 +197,7 @@ class _LoginPageState extends State<LoginPage> {
             },
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         Row(
           children: [
             SizedBox(
@@ -228,16 +219,16 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ],
         ),
-        const SizedBox(height: 24),
-        const SizedBox(
+        const SizedBox(height: 14),
+        SizedBox(
           width: double.infinity,
-          child: PrimaryButton(text: "Sign In"),
+          child: PrimaryButton(text: "Sign In", onTap: () {}),
         ),
-        const SizedBox(height: 28),
+        const SizedBox(height: 18),
         _buildDivider(),
-        const SizedBox(height: 24),
+        const SizedBox(height: 18),
         _buildSocialRow(),
-        const SizedBox(height: 28),
+        const SizedBox(height: 18),
         _buildTermsText(),
       ],
     );
@@ -256,16 +247,16 @@ class _LoginPageState extends State<LoginPage> {
             color: Colors.black,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
         Text(
           "Let's get you set up with a new workspace.",
           style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
         ),
-        const SizedBox(height: 28),
+        const SizedBox(height: 16),
         const AuthTextField(label: "Full Name", hint: "John Doe"),
-        const SizedBox(height: 20),
+        const SizedBox(height: 14),
         const AuthTextField(label: "Email Address", hint: "name@company.com"),
-        const SizedBox(height: 20),
+        const SizedBox(height: 14),
         AuthTextField(
           label: "Password",
           hint: "••••••••",
@@ -284,7 +275,7 @@ class _LoginPageState extends State<LoginPage> {
             },
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 14),
         AuthTextField(
           label: "Confirm Password",
           hint: "••••••••",
@@ -303,7 +294,7 @@ class _LoginPageState extends State<LoginPage> {
             },
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         Row(
           children: [
             SizedBox(
@@ -327,14 +318,14 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ],
         ),
-        const SizedBox(height: 24),
-        const SizedBox(
+        const SizedBox(height: 18),
+        SizedBox(
           width: double.infinity,
-          child: PrimaryButton(text: "Create Account"),
+          child: PrimaryButton(text: "Create Account", onTap: () {}),
         ),
-        const SizedBox(height: 28),
+        const SizedBox(height: 18),
         _buildDivider(),
-        const SizedBox(height: 24),
+        const SizedBox(height: 18),
         _buildSocialRow(),
       ],
     );
@@ -367,7 +358,7 @@ class _LoginPageState extends State<LoginPage> {
           child: SecondaryButton(
             text: "Google",
             icon: const Icon(Icons.g_mobiledata, size: 22, color: Colors.red),
-            onPressed: () {},
+            onTap: () {},
           ),
         ),
         const SizedBox(width: 16),
@@ -375,7 +366,7 @@ class _LoginPageState extends State<LoginPage> {
           child: SecondaryButton(
             text: "GitHub",
             icon: const Icon(Icons.code, size: 18, color: Colors.black87),
-            onPressed: () {},
+            onTap: () {},
           ),
         ),
       ],

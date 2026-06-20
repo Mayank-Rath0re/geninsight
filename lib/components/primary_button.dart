@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatefulWidget {
   final String text;
-  const PrimaryButton({super.key, required this.text});
+  final Function()? onTap;
+  final bool expand;
+  const PrimaryButton({
+    super.key,
+    required this.text,
+    required this.onTap,
+    this.expand = false,
+  });
 
   @override
   State<PrimaryButton> createState() => _PrimaryButtonState();
@@ -54,14 +61,19 @@ class _PrimaryButtonState extends State<PrimaryButton> {
               borderRadius: BorderRadius.circular(10),
               splashColor: Colors.white.withValues(alpha: 0.15),
               highlightColor: Colors.white.withValues(alpha: 0.05),
-              onTap: () {},
+              onTap: () {
+                widget.onTap!();
+              },
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 28,
-                  vertical: 16,
+                  horizontal: 24,
+                  vertical: 12,
                 ),
                 child: Row(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: widget.expand
+                      ? MainAxisSize.max
+                      : MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       widget.text,
